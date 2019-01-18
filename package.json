@@ -1,0 +1,25 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "Free weather search",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pavel-leskavets/weather-app.git"
+  },
+  "author": "Pavel Leskavets",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pavel-leskavets/weather-app/issues"
+  },
+  "homepage": "https://github.com/pavel-leskavets/weather-app#readme"
+}
