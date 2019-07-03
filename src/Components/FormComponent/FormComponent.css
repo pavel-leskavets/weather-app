@@ -1,0 +1,80 @@
+body {
+  background-color: #000;
+  color: #ccc;
+}
+.form-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 20px auto;
+  width: 350px;
+  height: 100%;
+  border: 2px solid #fae607;
+  border-radius: 25px;
+  box-shadow: 0 0 5px 2.5px #fae607;
+}
+.choice-of-service {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  width: 300px;
+  height: 100px;
+  margin-top: 20px;
+}
+input[type="radio"] {
+  background-color: transparent;
+  border: 0.0625em solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0 white;
+  cursor: pointer;
+  font: inherit;
+  height: 1em;
+  outline: none;
+  width: 1em;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+input:checked {
+  background-color: #fae607;
+  box-shadow: inset 0 0 0 0.1875em #fae607;
+  transition: background 0.15s, box-shadow 0.1s;
+}
+input[type="radio"]:checked ~ label {
+  color: #fae607;
+}
+.input-label {
+  cursor: pointer;
+}
+.search-btn {
+  background-color: #fae607;
+  color: #1d1d1d;
+  padding: 10px 20px;
+  border-radius: 0 10px 10px 0;
+  border: 0 none;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+.search-btn:focus {
+  outline: 0;
+}
+#search-box {
+  background: #eee;
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  border: 0 none;
+  width: 200px;
+  outline: none;
+  cursor: pointer;
+}
+.service-input {
+  padding: 10px 0;
+}
+.search-input {
+  background: #eee;
+  margin-top: 20px;
+  box-shadow: 0 0 5px 2.5px #fae607;
+  border-radius: 12px;
+}

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import WeatherComponent from "../WeatherComponent/WeatherComponent";
+import "./FormComponent.css";
 
 class FormComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: "",
-      type: "",
       coords: "",
       keyOne: "a7b04520659f47bbb7f183955181912",
       keyTwo: "ef2666e3832e630f61b26d76484c4a1c",
@@ -14,6 +14,7 @@ class FormComponent extends Component {
       city: "",
       temperature: "",
       humidity: "",
+      icon: "",
       radioGroup: {
         firstApi: false,
         secondApi: false
@@ -32,11 +33,6 @@ class FormComponent extends Component {
   }
   handleChange = e => {
     this.setState({ value: e.target.value });
-    if (this.state.radioGroup.firstApi) {
-      this.setState({ type: "first-service" });
-    } else if (this.state.radioGroup.secondApi) {
-      this.setState({ type: "second-service" });
-    }
   };
 
   handleSubmit = e => {
@@ -53,9 +49,11 @@ class FormComponent extends Component {
         this.setState({
           country: result.location.country,
           city: result.location.name,
-          temperature: result.current.temp_c + "°C",
-          humidity: result.current.humidity
+          temperature: Math.round(result.current.temp_c) + "°C",
+          humidity: result.current.humidity + "%",
+          icon: result.current.condition.icon
         });
+        console.log(result);
       } catch (error) {
         console.log(error);
       }
@@ -66,8 +64,9 @@ class FormComponent extends Component {
         this.setState({
           country: result.location.country,
           city: result.location.name,
-          temperature: result.current.temp_c + "°C",
-          humidity: result.current.humidity
+          temperature: Math.round(result.current.temp_c) + "°C",
+          humidity: result.current.humidity + "%",
+          icon: result.current.condition.icon
         });
       } catch (error) {
         console.log(error);
@@ -76,8 +75,14 @@ class FormComponent extends Component {
       try {
         const response = await fetch(this.creatingQqueryString());
         const result = await response.json();
-        this.setState({ current: result.main });
-        this.setState({ additional: result.weather[0] });
+        this.setState({
+          country: result.sys.country,
+          city: result.name,
+          temperature: Math.round(result.main.temp - 273.15) + "°C",
+          humidity: result.main.humidity + "%",
+          icon: `http://openweathermap.org/img/w/${result.weather[0].icon +
+            ".png"}`
+        });
       } catch (error) {
         console.log(error);
       }
@@ -104,9 +109,9 @@ class FormComponent extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form-component">
         <div className="change-form">
-          <div className="form">
+          <div className="search-input">
             <form onSubmit={this.handleSubmit} id="searchthis">
               <input
                 type="text"
@@ -116,12 +121,12 @@ class FormComponent extends Component {
                 value={this.state.value}
                 onChange={this.handleChange}
               />
-              <button>search</button>
+              <button className="search-btn">Search</button>
             </form>
           </div>
 
-          <div className="card">
-            <div>
+          <div className="choice-of-service">
+            <div className="service-input">
               <input
                 type="radio"
                 name="firstApi"
@@ -130,7 +135,10 @@ class FormComponent extends Component {
                 checked={!!this.state.radioGroup.firstApi}
                 onChange={this.handleRadio}
               />
-              <label htmlFor="one"> Apixu.com</label>
+              <label htmlFor="one" className="input-label">
+                {" "}
+                Apixu
+              </label>
             </div>
             <div>
               <input
@@ -141,7 +149,10 @@ class FormComponent extends Component {
                 checked={!!this.state.radioGroup.secondApi}
                 onChange={this.handleRadio}
               />
-              <label htmlFor="two"> openweathermap.org </label>
+              <label htmlFor="two" className="input-label">
+                {" "}
+                OpenWeatherMap{" "}
+              </label>
             </div>
           </div>
         </div>
@@ -150,6 +161,7 @@ class FormComponent extends Component {
           city={this.state.city}
           temperature={this.state.temperature}
           humidity={this.state.humidity}
+          icon={this.state.icon}
         />
       </div>
     );
