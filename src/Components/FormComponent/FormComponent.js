@@ -8,8 +8,10 @@ class FormComponent extends Component {
     this.state = {
       value: "",
       coords: "",
+      type: "",
       keyOne: "a7b04520659f47bbb7f183955181912",
       keyTwo: "ef2666e3832e630f61b26d76484c4a1c",
+      requestTime: 0,
       country: "",
       city: "",
       temperature: "",
@@ -31,8 +33,14 @@ class FormComponent extends Component {
       this.fetchWeather(primaryUrl);
     });
   }
+
   handleChange = e => {
     this.setState({ value: e.target.value });
+    if (this.state.radioGroup.firstApi) {
+      this.setState({ type: "firstApi" });
+    } else if (this.state.radioGroup.secondApi) {
+      this.setState({ type: "secondApi" });
+    }
   };
 
   handleSubmit = e => {
@@ -42,6 +50,28 @@ class FormComponent extends Component {
   };
 
   fetchWeather = async url => {
+    const TWO_HOURS = 7200000;
+    let keyForLocalStorage = (
+      this.state.value + this.state.type
+    ).toLocaleLowerCase();
+    let stateFromLocalStorage = JSON.parse(
+      localStorage.getItem(keyForLocalStorage)
+    );
+    if (
+      stateFromLocalStorage !== null &&
+      Date.now() - stateFromLocalStorage.requestTime < TWO_HOURS
+    ) {
+      this.setState({
+        country: stateFromLocalStorage.country,
+        city: stateFromLocalStorage.city,
+        temperature: stateFromLocalStorage.temperature,
+        humidity: stateFromLocalStorage.humidity,
+        icon: stateFromLocalStorage.icon,
+        requestTime: Date.now()
+      });
+      return;
+    }
+
     if (!this.state.radioGroup.firstApi && !this.state.radioGroup.secondApi) {
       try {
         const response = await fetch(url);
@@ -51,9 +81,9 @@ class FormComponent extends Component {
           city: result.location.name,
           temperature: Math.round(result.current.temp_c) + "°C",
           humidity: result.current.humidity + "%",
-          icon: result.current.condition.icon
+          icon: result.current.condition.icon,
+          requestTime: Date.now()
         });
-        console.log(result);
       } catch (error) {
         console.log(error);
       }
@@ -66,7 +96,8 @@ class FormComponent extends Component {
           city: result.location.name,
           temperature: Math.round(result.current.temp_c) + "°C",
           humidity: result.current.humidity + "%",
-          icon: result.current.condition.icon
+          icon: result.current.condition.icon,
+          requestTime: Date.now()
         });
       } catch (error) {
         console.log(error);
@@ -81,12 +112,14 @@ class FormComponent extends Component {
           temperature: Math.round(result.main.temp - 273.15) + "°C",
           humidity: result.main.humidity + "%",
           icon: `http://openweathermap.org/img/w/${result.weather[0].icon +
-            ".png"}`
+            ".png"}`,
+          requestTime: Date.now()
         });
       } catch (error) {
         console.log(error);
       }
     }
+    this.localStorageSet();
   };
 
   handleRadio = e => {
@@ -94,7 +127,6 @@ class FormComponent extends Component {
     object[e.target.value] = e.target.checked;
     this.setState({ radioGroup: object });
   };
-
   creatingQqueryString = () => {
     if (this.state.radioGroup.firstApi) {
       return `https://api.apixu.com/v1/current.json?key=${
@@ -106,10 +138,30 @@ class FormComponent extends Component {
       }&appid=${this.state.keyTwo}`;
     }
   };
-
+  setTypeOfService = () => {
+    if (this.state.radioGroup.firstApi) {
+      this.setState({ type: "firstApi" });
+    } else if (this.state.radioGroup.secondApi) {
+      this.setState({ type: "secondApi" });
+    }
+  };
+  localStorageSet = () => {
+    let keyForLocalStorage = (
+      this.state.city + this.state.type
+    ).toLocaleLowerCase();
+    let currentState = {
+      city: this.state.city,
+      country: this.state.country,
+      temperature: this.state.temperature,
+      humidity: this.state.humidity,
+      icon: this.state.icon,
+      requestTime: this.state.requestTime
+    };
+    localStorage.setItem(keyForLocalStorage, JSON.stringify(currentState));
+  };
   render() {
     return (
-      <div className="form-component">
+      <div className="form-component" onClick={this.setTypeOfService}>
         <div className="change-form">
           <div className="search-input">
             <form onSubmit={this.handleSubmit} id="searchthis">
@@ -117,7 +169,7 @@ class FormComponent extends Component {
                 type="text"
                 id="search-box"
                 placeholder="
-                    Select weather service and enter title of city"
+                Enter the name of the city"
                 value={this.state.value}
                 onChange={this.handleChange}
               />
@@ -140,7 +192,7 @@ class FormComponent extends Component {
                 Apixu
               </label>
             </div>
-            <div>
+            <div className="service-input">
               <input
                 type="radio"
                 name="secondApi"

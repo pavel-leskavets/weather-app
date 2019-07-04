@@ -7,12 +7,10 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 20px auto;
+  margin: 0 auto;
   width: 350px;
   height: 100%;
-  border: 2px solid #fae607;
   border-radius: 25px;
-  box-shadow: 0 0 5px 2.5px #fae607;
 }
 .choice-of-service {
   display: flex;
@@ -23,6 +21,7 @@ body {
   height: 100px;
   margin-top: 20px;
 }
+
 input[type="radio"] {
   background-color: transparent;
   border: 0.0625em solid rgba(255, 255, 255, 0.5);
@@ -44,17 +43,21 @@ input:checked {
 input[type="radio"]:checked ~ label {
   color: #fae607;
 }
+::-webkit-input-placeholder {
+  font-size: 20px;
+}
 .input-label {
   cursor: pointer;
+  font-size: 26px;
 }
 .search-btn {
   background-color: #fae607;
   color: #1d1d1d;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 0 10px 10px 0;
   border: 0 none;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 22px;
   cursor: pointer;
 }
 .search-btn:focus {
@@ -62,12 +65,13 @@ input[type="radio"]:checked ~ label {
 }
 #search-box {
   background: #eee;
-  padding: 10px;
+  padding: 0 10px;
   border-radius: 10px 0 0 10px;
   border: 0 none;
   width: 200px;
   outline: none;
   cursor: pointer;
+  font-size: 30px;
 }
 .service-input {
   padding: 10px 0;
