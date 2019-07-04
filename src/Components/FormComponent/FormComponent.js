@@ -67,7 +67,7 @@ class FormComponent extends Component {
         temperature: stateFromLocalStorage.temperature,
         humidity: stateFromLocalStorage.humidity,
         icon: stateFromLocalStorage.icon,
-        requestTime: Date.now()
+        requestTime: stateFromLocalStorage.requestTime
       });
       return;
     }
