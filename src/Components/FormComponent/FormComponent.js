@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import WeatherComponent from "../WeatherComponent/WeatherComponent";
+import ChoiceServiceComponent from "../ChoiceServiceComponent/ChoiceServiceComponent";
 import "./FormComponent.css";
 
 class FormComponent extends Component {
@@ -178,34 +179,20 @@ class FormComponent extends Component {
           </div>
 
           <div className="choice-of-service">
-            <div className="service-input">
-              <input
-                type="radio"
-                name="firstApi"
-                id="one"
-                value="firstApi"
-                checked={!!this.state.radioGroup.firstApi}
-                onChange={this.handleRadio}
-              />
-              <label htmlFor="one" className="input-label">
-                {" "}
-                Apixu
-              </label>
-            </div>
-            <div className="service-input">
-              <input
-                type="radio"
-                name="secondApi"
-                id="two"
-                value="secondApi"
-                checked={!!this.state.radioGroup.secondApi}
-                onChange={this.handleRadio}
-              />
-              <label htmlFor="two" className="input-label">
-                {" "}
-                OpenWeatherMap{" "}
-              </label>
-            </div>
+            <ChoiceServiceComponent
+              name="Apixu"
+              id="firstService"
+              value="firstApi"
+              checked={!!this.state.radioGroup.firstApi}
+              onChange={this.handleRadio}
+            />
+            <ChoiceServiceComponent
+              name="OpenWeatherMap"
+              id="secondService"
+              value="secondApi"
+              checked={!!this.state.radioGroup.secondApi}
+              onChange={this.handleRadio}
+            />
           </div>
         </div>
         <WeatherComponent
